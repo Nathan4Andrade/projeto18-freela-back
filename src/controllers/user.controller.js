@@ -4,6 +4,7 @@ import { db } from "../database/database.connection.js";
 
 export async function signup(req, res) {
   const { name, email, cpf, telephone, password, confirmPassword } = req.body;
+  const image = req.file.buffer;
   const hashPass = bcrypt.hashSync(password, 10);
 
   try {
@@ -25,12 +26,12 @@ export async function signup(req, res) {
     );
     if (existingTelephone.rowCount > 0)
       return res.status(409).send("Telephone já cadastrado");
-    const imageBuffer = req.file.buffer;
-    console.log(imageBuffer);
+
+    console.log(image);
 
     await db.query(
       `INSERT INTO users (name, image, email, cpf, telephone, password) VALUES ($1, $2, $3, $4, $5, $6)`,
-      [name, imageBuffer, email, cpf, telephone, hashPass]
+      [name, image, email, cpf, telephone, hashPass]
     );
     res.sendStatus(201);
   } catch (error) {
