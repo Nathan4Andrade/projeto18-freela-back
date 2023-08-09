@@ -19,10 +19,18 @@ export async function signup(req, res) {
     ]);
     if (existingCpf.rowCount > 0)
       return res.status(409).send("CPF já cadastrado");
+    const existingTelephone = await db.query(
+      `SELECT * from users WHERE telephone=$1`,
+      [telephone]
+    );
+    if (existingTelephone.rowCount > 0)
+      return res.status(409).send("Telephone já cadastrado");
+    const imageBuffer = req.file.buffer;
+    console.log(imageBuffer);
 
     await db.query(
-      `INSERT INTO users (name, email, cpf, telephone, password) VALUES ($1, $2, $3, $4, $5)`,
-      [name, email, cpf, telephone, hashPass]
+      `INSERT INTO users (name, image, email, cpf, telephone, password) VALUES ($1, $2, $3, $4, $5, $6)`,
+      [name, imageBuffer, email, cpf, telephone, hashPass]
     );
     res.sendStatus(201);
   } catch (error) {
