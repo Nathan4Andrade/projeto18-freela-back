@@ -8,17 +8,16 @@ import {
 } from "../repository/cat.repository.js";
 
 export async function postCat(req, res) {
-  const { name, breed, age, description } = req.body;
-  const image = req.file.buffer;
+  const { name, breed, age, description, image } = req.body;
+  /* const image = req.file.buffer; */
   const { user } = res.locals;
-
   try {
     const existingCat = await selectCatByName(name);
     if (existingCat.rowCount > 0)
       return res
         .status(409)
         .send({ message: "Você já cadastrou um gato com esse nome!" });
-    await insertCat(name, image, breed, age, description, user);
+    const cat = await insertCat(name, image, breed, age, description, user);
     res.status(200).send("Seu gato foi adicionado!");
   } catch (err) {
     res.status(500).send(err.message);
@@ -47,10 +46,10 @@ export async function getCatById(req, res) {
 }
 
 export async function getMyCats(req, res) {
-  const user = req.locals;
+  const { user } = res.locals;
   try {
-    const cats = await selectUserCats(user.id);
-
+    const cats = await selectUserCats(user);
+    console.log(user);
     res.send(cats.rows);
   } catch (err) {
     res.status(500).send(err.message);
@@ -59,7 +58,8 @@ export async function getMyCats(req, res) {
 
 export async function updateAvailability(req, res) {
   const { id } = req.params;
-  const { available } = req.body;
+
+  const available = (await selectCat(id)).rows[0].available;
 
   try {
     const cat = await updateCatAvailability(id, available);

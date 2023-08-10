@@ -8,8 +8,8 @@ export function selectCat(id) {
   return db.query(`SELECT * FROM cats WHERE id=$1`, [id]);
 }
 
-export function selectUserCats(id) {
-  return db.query(`SELECT * FROM cats WHERE "userId"=$1`, [id]);
+export function selectUserCats(user) {
+  return db.query(`SELECT * FROM cats WHERE "userId"=$1`, [user.id]);
 }
 
 export function selectAllCats() {
@@ -17,10 +17,8 @@ export function selectAllCats() {
 }
 
 export function insertCat(name, image, breed, age, description, user) {
-  db.query(
-    `
-        INSERT INTO cats (name, description, image, breed, age, "userId") 
-        VALUES ($1, $2, $3, $4, $5, $6);`,
+  return db.query(
+    `INSERT INTO cats (name, description, image, breed, age, "userId") VALUES ($1, $2, $3, $4, $5, $6)`,
     [name, description, image, breed, age, user.id]
   );
 }

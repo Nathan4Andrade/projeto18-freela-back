@@ -10,8 +10,9 @@ import {
 } from "../repository/user.repository.js";
 
 export async function signup(req, res) {
-  const { name, email, cpf, telephone, password, confirmPassword } = req.body;
-  const image = req.file.buffer;
+  const { name, email, cpf, telephone, image, password, confirmPassword } =
+    req.body;
+  /*   const image = req.file.buffer; */
   const hashPass = bcrypt.hashSync(password, 10);
 
   try {

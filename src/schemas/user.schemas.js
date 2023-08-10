@@ -4,6 +4,7 @@ export const schemaSignup = joi.object({
   name: joi.string().required(),
   email: joi.string().email().required(),
   telephone: joi.string().min(10).max(11).required(),
+  image: joi.string(),
   cpf: joi
     .string()
     .pattern(/^[0-9]{11}$/)
