@@ -5,7 +5,10 @@ export function selectCatByName(name) {
 }
 
 export function selectCat(id) {
-  return db.query(`SELECT * FROM cats WHERE id=$1`, [id]);
+  return db.query(
+    `SELECT cats.*, users.name as "owner" FROM cats JOIN users ON users.id = cats."userId" WHERE cats.id=$1`,
+    [id]
+  );
 }
 
 export function selectUserCats(user) {
