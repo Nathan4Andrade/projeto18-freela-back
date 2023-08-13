@@ -1,6 +1,8 @@
 import {
   insertCat,
   insertFavorite,
+  removeCat,
+  removeFavorite,
   selectAllCats,
   selectCat,
   selectCatByName,
@@ -89,7 +91,31 @@ export async function postFavorite(req, res) {
 
   try {
     const newFavorite = await insertFavorite(user, id);
-    res.status(200).send("Seu gato foi adicionado!");
+    res.status(200).send("Gato foi adicionado nos favoritos!");
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+export async function deleteFavorite(req, res) {
+  const { id } = req.params;
+  const { user } = res.locals;
+
+  try {
+    const result = await removeFavorite(user, id);
+    res.status(200).send("O gato foi removido dos favoritos!");
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+export async function deleteCat(req, res) {
+  const { id } = req.params;
+  const { user } = res.locals;
+
+  try {
+    const result = await removeCat(user, id);
+    res.status(200).send("O gato foi removido!");
   } catch (err) {
     res.status(500).send(err.message);
   }

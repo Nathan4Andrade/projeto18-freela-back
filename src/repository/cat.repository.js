@@ -50,3 +50,17 @@ export function insertFavorite(user, id) {
     id,
   ]);
 }
+
+export function removeFavorite(user, id) {
+  return db.query(`DELETE FROM favorites WHERE "userId"=$1 AND "catId"=$2`, [
+    user.id,
+    id,
+  ]);
+}
+
+export function removeCat(user, id) {
+  return db.query(`DELETE FROM cats WHERE "userId"=$1 AND "id"=$2`, [
+    user.id,
+    id,
+  ]);
+}
