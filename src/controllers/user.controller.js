@@ -7,6 +7,7 @@ import {
   selectCpf,
   selectEmail,
   selectTelephone,
+  selectUser,
 } from "../repository/user.repository.js";
 
 export async function signup(req, res) {
@@ -48,6 +49,18 @@ export async function signin(req, res) {
 
     await insertSection(user.id, token);
     res.status(200).send({ token: token });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+}
+
+export async function getMe(req, res) {
+  const { user } = res.locals;
+
+  try {
+    const me = await selectUser(user);
+    delete me.password;
+    res.status(200).send(me.rows[0]);
   } catch (error) {
     res.status(500).send(error.message);
   }

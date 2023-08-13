@@ -6,7 +6,7 @@ export function selectCatByName(name) {
 
 export function selectCat(id) {
   return db.query(
-    `SELECT cats.*, users.name AS "owner", users.telephone AS "ownerTelephone" FROM cats JOIN users ON users.id = cats."userId" WHERE cats.id=$1`,
+    `SELECT cats.*, users.name AS "owner", users.telephone AS "ownerTelephone", users.image AS "ownerImage" FROM cats JOIN users ON users.id = cats."userId" WHERE cats.id=$1`,
     [id]
   );
 }

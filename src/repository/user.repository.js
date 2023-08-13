@@ -25,3 +25,7 @@ export function insertSection(userId, token) {
     token,
   ]);
 }
+
+export function selectUser(user) {
+  return db.query(`SELECT * FROM users WHERE id=$1`, [user.id]);
+}
