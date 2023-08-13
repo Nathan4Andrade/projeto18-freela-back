@@ -32,3 +32,21 @@ export function updateCatAvailability(id, available) {
     id,
   ]);
 }
+
+export function selectFavoriteCats(user) {
+  return db.query(
+    `SELECT favorites.*, cats.name, cats.breed, cats.age, cats.description, cats.image, cats.available, users.name AS "owner", users.telephone AS "ownerTelephone" 
+	  FROM favorites
+  	JOIN cats ON cats.id = favorites."catId"
+	  JOIN users ON users.id = favorites."userId"
+	  WHERE favorites."userId"=$1`,
+    [user.id]
+  );
+}
+
+export function insertFavorite(user, id) {
+  return db.query(`INSERT INTO favorites ("userId", "catId") VALUES ($1, $2)`, [
+    user.id,
+    id,
+  ]);
+}

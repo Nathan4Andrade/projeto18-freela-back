@@ -1,8 +1,10 @@
 import {
   insertCat,
+  insertFavorite,
   selectAllCats,
   selectCat,
   selectCatByName,
+  selectFavoriteCats,
   selectUserCats,
   updateCatAvailability,
 } from "../repository/cat.repository.js";
@@ -64,6 +66,30 @@ export async function updateAvailability(req, res) {
   try {
     const cat = await updateCatAvailability(id, available);
     res.send("Atualizado");
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+export async function getFavorites(req, res) {
+  const { user } = res.locals;
+
+  try {
+    const cats = await selectFavoriteCats(user);
+    console.log(user);
+    res.send(cats.rows);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+export async function postFavorite(req, res) {
+  const { id } = req.params;
+  const { user } = res.locals;
+
+  try {
+    const newFavorite = await insertFavorite(user, id);
+    res.status(200).send("Seu gato foi adicionado!");
   } catch (err) {
     res.status(500).send(err.message);
   }

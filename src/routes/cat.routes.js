@@ -5,8 +5,10 @@ import { schemaCat } from "../schemas/cat.schema.js";
 import {
   getCatById,
   getCats,
+  getFavorites,
   getMyCats,
   postCat,
+  postFavorite,
   updateAvailability,
 } from "../controllers/cat.controller.js";
 
@@ -17,5 +19,7 @@ catRouter.get("/cats", validateAuth, getCats);
 catRouter.get("/cats/me", validateAuth, getMyCats);
 catRouter.get("/cats/:id", validateAuth, getCatById);
 catRouter.put("/cats/:id", validateAuth, updateAvailability);
+catRouter.get("/favorites", validateAuth, getFavorites);
+catRouter.post("/favorites/:id", validateAuth, postFavorite);
 
 export default catRouter;
