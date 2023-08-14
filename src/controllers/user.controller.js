@@ -58,10 +58,10 @@ export async function getMe(req, res) {
   const { user } = res.locals;
 
   try {
-    const me = await selectUser(user).rows[0];
+    const me = await selectUser(user);
 
-    delete me.password;
-    res.status(200).send(me);
+    delete me.rows[0].password;
+    res.status(200).send(me.rows[0]);
   } catch (error) {
     res.status(500).send(error.message);
   }
