@@ -13,7 +13,6 @@ import {
 
 export async function postCat(req, res) {
   const { name, breed, age, description, image } = req.body;
-  /* const image = req.file.buffer; */
   const { user } = res.locals;
   try {
     const existingCat = await selectCatByName(name);
@@ -53,7 +52,6 @@ export async function getMyCats(req, res) {
   const { user } = res.locals;
   try {
     const cats = await selectUserCats(user);
-    console.log(user);
     res.send(cats.rows);
   } catch (err) {
     res.status(500).send(err.message);
@@ -78,7 +76,6 @@ export async function getFavorites(req, res) {
 
   try {
     const cats = await selectFavoriteCats(user);
-    console.log(user);
     res.send(cats.rows);
   } catch (err) {
     res.status(500).send(err.message);
